@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhy.crm.mapper.MarketingActivitiesRemarkMapper">
+
+    <resultMap id="BaseResultMap" type="com.hhy.crm.beans.MarketingActivitiesRemark">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="notePerson" column="note_person" jdbcType="VARCHAR"/>
+            <result property="noteContent" column="note_content" jdbcType="VARCHAR"/>
+            <result property="noteTime" column="note_time" jdbcType="VARCHAR"/>
+            <result property="editPerson" column="edit_person" jdbcType="VARCHAR"/>
+            <result property="editTime" column="edit_time" jdbcType="VARCHAR"/>
+            <result property="editFlag" column="edit_flag" jdbcType="INTEGER"/>
+            <result property="marketingActivitiesId" column="marketing_activities_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,note_person,note_content,
+        note_time,edit_person,edit_time,
+        edit_flag,marketing_activities_id
+    </sql>
+</mapper>

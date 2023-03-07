@@ -48,13 +48,13 @@
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                <a class="nav-link" data-widget="navbar-search" onclick="url('https://www.baidu.com/')" href="https://www.baidu.com/" role="button">
                     <i class="fas fa-window-close"></i>：退出
                 </a>
             </li>
             <!-- Navbar Search -->
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                <a class="nav-link" data-widget="navbar-search" onclick="url('imgs/寒冰射手.jpg')" href="imgs/寒冰射手.jpg" role="button">
                     <i class="fas fa-user"></i>：hhy
                 </a>
             </li>
@@ -112,9 +112,9 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link ">
+                                <a href="javascript:void(0);" onclick="menu('marketingActivitiesRemark.html')" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>学生汇总</p>
+                                    <p>活动管理</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -235,7 +235,9 @@
     //
     // }
  // $();等价于window.onload
-
+function url(urlPath) {
+    window.location.href=urlPath;
+}
 
 function menu(url) {
     $("#work").load(url);

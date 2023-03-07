@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhy.crm.mapper.MarketingActivitiesMapper">
+
+    <resultMap id="BaseResultMap" type="com.hhy.crm.beans.MarketingActivities">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="owner" column="owner" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="startDate" column="start_date" jdbcType="VARCHAR"/>
+        <result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+        <result property="cost" column="cost" jdbcType="BIGINT"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="editBy" column="edit_by" jdbcType="VARCHAR"/>
+        <result property="editTime" column="edit_time" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="getAll" type="com.hhy.crm.beans.MarketingActivities">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="owner" column="owner" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="startDate" column="start_date" jdbcType="VARCHAR"/>
+        <result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+        <result property="cost" column="cost" jdbcType="BIGINT"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="editBy" column="edit_by" jdbcType="VARCHAR"/>
+        <result property="editTime" column="edit_time" jdbcType="VARCHAR"/>
+        <association  property="ownerUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="owner" >
+        </association >
+        <association  property="createByUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="create_by" >
+        </association >
+        <association  property="editByUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="edit_by" >
+        </association >
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,owner,name,
+        start_date,end_date,cost,
+        description,create_by,create_time,
+        edit_by,edit_time
+    </sql>
+
+    <select id="getAll" resultMap="getAll">
+        select id,
+               `owner`,
+               `name`,
+               start_date,
+               end_date,
+               cost,
+               `description`,
+               create_by,
+               create_time,
+               edit_by,
+               edit_time
+        from tbl_marketing_activities
+    </select>
+
+</mapper>
