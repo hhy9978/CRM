@@ -1,0 +1,329 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <!--      开始分12栅栏-->
+    <!--            col-xs-【手机】	.col-sm-【平板】	.col-md-【小尺寸电脑≥992px】	.col-lg-【大尺寸电脑≥1200px】  -->
+    <!--            如果不想做成响应式，但支持响应式【手机上字体不会小】，所有占格都写成手机--col-xs-n  -->
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-xs-6">
+                <h1 class="m-0">字典类型详细信息</h1>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" style="margin-bottom: 10px">
+            <div class="col-12">
+                <button id="btnAdd" type="button" class="btn  btn-primary">添加</button>
+                <button id="btnDel" type="button" class="btn  btn-primary">删除</button>
+                <button id="btnEdit" type="button" class="btn  btn-primary">修改</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table id="infoTable" class="table table-hover table-bordered text-nowrap">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>ID</th>
+                                <th>类型名称</th>
+                                <th>描述</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+<!--字典编辑模态框【参考bootstrap】-->
+<div class="modal fade" id="dictionaryTypeModal" data-use="edit" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">字典类型添加</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <input id="id" type="hidden" class="form-control">
+                            <label class="col-sm-2 col-form-label">类型名称</label>
+                            <div class="col-sm-10">
+                                <input id="name" type="text" class="form-control" placeholder="请输入字典类型名称">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">类型描述</label>
+                            <div class="col-sm-10">
+                                <input id="description" type="text" class="form-control" placeholder="请输入字典类型的描述">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="btnSave" type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>
+    function getAll() {
+
+        //ajax异步请求，XMLHttpRequest异步请求对象【简称：XHR】
+        //url：请求的后端地址
+        //type：请求模式，默认get
+        //dataType：预期后端返回的数据交互格式类型，一般都是JSON
+        //beforeSend：请求准备，提供XHR参数使用
+        //success：请求准备，提供data【后端返回的数据字符串】, textStatus, jqXHR参数使用
+        //error：请求准备，提供XHR, textStatus, errorThrown（错误代码，前端的一些错误信息）参数使用
+        //complete：请求结束，提供XHR、textStatus响应状态码参数使用
+        $.ajax({
+            url: "http://localhost:8080/dictionaryType/getAll.action",
+            type: "get",
+            dataType: "json",
+            beforeSend: function (XHR) {
+                console.log("准备开始请求type_getAll...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.result) {
+                    //选择表格里面的tbody对象，然后清空
+                    $("#infoTable tbody").empty();
+                    //把后端返回的JSON格式数据变成jquery对象【也就是jquery的集合对象】，则使用jquery提供的each()方法遍历
+                    $(data.data).each(function (i, item) {
+                        //遍历的时候在给tbody对象添加每一tr
+                        //这里主要使用了jquery的append()方法【该方法提供了字符串累加模式轻松添加HTML结构】
+                        $("#infoTable tbody").append('                            <tr>\n' +
+                            '                                <td><input type="checkbox" value="' + item.id + '" ></td>\n' +
+                            '                                <td>' + item.id + '</td>\n' +
+                            '                                <td>' + item.name + '</td>\n' +
+                            '                                <td>' + item.description + '</td>\n' +
+                            '                            </tr>');
+                    });
+                }else {
+                    alert(data.errorMsg);
+                }
+                console.log("请求成功type_getAll...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败type_getAll...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕type_getAll...............");
+            }
+        });
+    }
+
+    $(function () {
+        //TODO 模态框弹出之前的初始化
+        $("#dictionaryTypeModal").on("show.bs.modal", function () {
+            if ($("#dictionaryTypeModal").data("use") === "add") {
+                $("#name").val("");
+                $("#description").val("");
+            }
+        });
+
+        //TODO 添加按钮点击【弹出模态框】
+        $("#btnAdd").click(function () {
+            //修改模式为add框
+            $("#dictionaryTypeModal").data("use", "add");
+            //修改标题
+            $("#dictionaryTypeModal h4").text("字典类型添加");
+            //弹出添加模态框
+            $("#dictionaryTypeModal").modal('show');
+        });
+
+        //TODO 保存按钮实现
+        $("#btnSave").click(function () {
+            if ($("#dictionaryTypeModal").data("use") === "add") {
+                $.ajax({
+                    url: "http://localhost:8080/dictionaryType/add.action",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name: $("#name").val(),
+                        description: $("#description").val()
+                    },
+                    beforeSend: function (XHR) {
+                        console.log("准备开始请求type_add...............")
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.result) {
+                            $("#dictionaryTypeModal").modal('hide');
+                            getAll();
+                            alert(data.successMsg);
+                        }else {
+                            alert(data.errorMsg);
+                        }
+                        console.log("请求成功type_add...............");
+                    },
+                    error: function (XHR, textStatus, errorThrown) {
+                        console.log("请求失败type_add...............");
+                    },
+                    complete: function (XHR, textStatus) {
+                        console.log("请求完毕type_add...............");
+                    }
+                });
+                return;
+            }
+            if ($("#dictionaryTypeModal").data("use") === "edit") {
+                $.ajax({
+                    url: "http://localhost:8080/dictionaryType/edit.action",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id: $("#id").val(),
+                        name: $("#name").val(),
+                        description: $("#description").val()
+                    },
+                    beforeSend: function (XHR) {
+                        console.log("准备开始请求type_edit...............")
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.result) {
+                            $("#dictionaryTypeModal").modal('hide');
+                            getAll();
+                            alert(data.successMsg);
+                        }else {
+                            alert(data.errorMsg);
+                        }
+                        console.log("请求成功type_edit...............");
+                    },
+                    error: function (XHR, textStatus, errorThrown) {
+                        console.log("请求失败type_edit...............");
+                    },
+                    complete: function (XHR, textStatus) {
+                        console.log("请求完毕type_edit...............");
+                    }
+                });
+                return;
+            }
+        });
+
+        //TODO 删除按钮
+        $("#btnDel").click(function () {
+
+            //判断是否选中一行【利用选择器选中DOM对象】
+            if ($("#infoTable tbody input:checked").length <= 0) {
+                window.alert("你没有选中任何一行");
+                return;
+            }
+
+            if (!confirm("是否确认删除?")) {
+                return;
+            }
+
+            var ids =  new Array();
+            $("#infoTable tbody input:checked").each(function() {
+                ids.push($(this).val());
+            });
+            $.ajax({
+                url: "http://localhost:8080/dictionaryType/del.action",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                beforeSend: function (XHR) {
+                    console.log("准备开始请求type_del...............")
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.result) {
+                        getAll();
+                        alert(data.successMsg);
+                    }else {
+                        alert(data.errorMsg);
+                    }
+                    console.log("请求成功type_del...............");
+                },
+                error: function (XHR, textStatus, errorThrown) {
+                    console.log("请求失败type_del...............");
+                },
+                complete: function (XHR, textStatus) {
+                    console.log("请求完毕type_del...............");
+                }
+            });
+        });
+
+
+        //TODO 修改按钮
+        $("#btnEdit").click(function () {
+            //判断是否选中一行【利用选择器选中DOM对象】
+            if ($("#infoTable tbody input:checked").length <= 0) {
+                window.alert("你没有选中任何一行");
+                return;
+            }
+
+            $.ajax({
+                url: "http://localhost:8080/dictionaryType/get.action",
+                type: "get",
+                dataType: "json",
+                data: {
+                    id: $("#infoTable tbody input:checked:first").val()
+                },
+                beforeSend: function (XHR) {
+                    console.log("准备开始请求type_get...............")
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.result) {
+                        //修改模式为edit框
+                        $("#dictionaryTypeModal").data("use", "edit");
+                        //修改标题
+                        $("#dictionaryTypeModal h4").text("字典类型修改");
+                        //添加模态框里面的数据
+                        $("#id").val(data.data.id);
+                        $("#name").val(data.data.name);
+                        $("#description").val(data.data.description);
+                        //弹出添加模态框
+                        $("#dictionaryTypeModal").modal('show');
+                    }else {
+                        alert(data.errorMsg);
+                    }
+                    console.log("请求成功type_get...............");
+                },
+                error: function (XHR, textStatus, errorThrown) {
+                    console.log("请求失败type_get...............");
+                    console.log("请求失败type_get..............." + textStatus);
+                    console.log("请求失败type_get:errorThrown..............." + errorThrown);
+                },
+                complete: function (XHR, textStatus) {
+                    console.log("请求完毕type_get...............");
+                }
+            });
+
+
+        });
+
+
+        //TODO 界面显示初始化
+        getAll();
+
+
+        $("thead :checkbox").click(function () {
+            $("tbody :checkbox").prop("checked", $("thead :checkbox").prop("checked"));
+        });
+
+    });
+</script>
