@@ -28,6 +28,11 @@
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
 
+    <!--dateTime    -->
+    <link rel="stylesheet" href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -75,7 +80,7 @@
         <div class="sidebar">
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul id="ul_lan" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item menu-open">
@@ -99,22 +104,21 @@
                                     <p>字典数值管理</p>
                                 </a>
                             </li>
-
                         </ul>
                     </li>
                     <li class="nav-item ">
-                        <a href="#" class="nav-link ">
+                        <a  href="#" class="nav-link ">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                汇总管理
+                                活动管理
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" onclick="menu('marketingActivitiesRemark.html')" class="nav-link ">
+                                <a href="javascript:void(0);" onclick="menu('marketingActivities.html')" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>活动管理</p>
+                                    <p>活动信息</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -227,6 +231,14 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="js/pages/dashboard.js"></script>
 
+<!--dateTime-->
+<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="plugins/bootstrap-datetimepicker/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+
 
 <!--自定义脚本-->
 <script>
@@ -243,7 +255,51 @@ function menu(url) {
     $("#work").load(url);
 }
 
+function focalPoint() {
+    $(".nav.nav-treeview a").on("click", function() {
+        $(".nav-link.active").removeClass("active");
+        $(this).parent().parent().prev("a").addClass("active");
+    });
+}
+
+
+//日期组件初始化
+function dateInit() {
+    $("input[datetime]").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy-mm-dd hh:ii:ss",//显示格式
+        minView: "hour", // 日期时间选择器所能够提供的最精确的时间选择视图。
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true, //选中自动关闭
+        clearBtn: true,
+        todayBtn: true,
+        pickerPosition: "bottom-right"
+    }).prop("readonly", true).css("cursor", "default")
+        .on("change", function () {
+            setTimeout(function () {
+                this.value = this.value.replace(/\d\d$/, "00");
+            }.bind(this), 1);
+        });
+
+    $("input[date]").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy-mm-dd",//显示格式
+        minView: "month", // 日期时间选择器所能够提供的最精确的时间选择视图。
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true, //选中自动关闭
+        clearBtn: true,
+        todayBtn: true,
+        pickerPosition: "bottom-right"
+    }).prop("readonly", true).css("cursor", "default");
+
+    //初始化文本框里面的值
+    $("input[date]").datetimepicker("setDate", new Date());
+    // $("input[datetime]").datetimepicker("setDate", new Date());
+}
+
+
 $(function () {
+    focalPoint();
     //使用ajax异步加载[属于静态页面的异步加载]
     $("#work").load("dictionaryType.html");
 });

@@ -82,9 +82,7 @@ public class DictionaryValueServiceImpl extends ServiceImpl<DictionaryValueMappe
         } catch (Exception e) {
             throw new MySqlException(e.getMessage());
         }
-        if (!isSucceed) {
-            throw new MyTextException("添加失败,字典数值不存在!");
-        }
+
     }
 
     @Override

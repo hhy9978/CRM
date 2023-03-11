@@ -5,7 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
+import org.apache.ibatis.annotations.One;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 市场活动表
@@ -26,6 +31,7 @@ public class MarketingActivities implements Serializable {
     private String owner;
 
 
+    @TableField(exist = false)
     private User ownerUser;
 
 
@@ -45,7 +51,7 @@ public class MarketingActivities implements Serializable {
     private String endDate;
 
     /**
-     * 
+     * 成本
      */
     private Long cost;
 
@@ -59,6 +65,7 @@ public class MarketingActivities implements Serializable {
      */
     private String createBy;
 
+    @TableField(exist = false)
     private User createByUser;
 
 
@@ -72,6 +79,7 @@ public class MarketingActivities implements Serializable {
      */
     private String editBy;
 
+    @TableField(exist = false)
     private User editByUser;
 
     /**
@@ -81,4 +89,9 @@ public class MarketingActivities implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+
+    public MarketingActivities() {
+        System.out.println("111111");
+    }
 }

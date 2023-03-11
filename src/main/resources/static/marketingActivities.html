@@ -1,0 +1,651 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <!--      开始分12栅栏-->
+    <!--            col-xs-【手机】	.col-sm-【平板】	.col-md-【小尺寸电脑≥992px】	.col-lg-【大尺寸电脑≥1200px】  -->
+    <!--            如果不想做成响应式，但支持响应式【手机上字体不会小】，所有占格都写成手机--col-xs-n  -->
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-xs-6">
+                <h1 class="m-0">&thinsp;&thinsp;活动管理</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!--TODO element: 主操作区-->
+        <div>
+            <!--查询框-->
+            <div class="form-group row">
+                <label class="col-form-label">&emsp;活动名称&emsp;&emsp;</label>
+                <input id="input_query_name" type="text" class="form-control col-sm-2" placeholder="请输入活动名称">
+                <label class="col-form-label">&emsp;&emsp;成本&emsp;&emsp;&emsp;&emsp;</label>
+                <input id="input_query_cost" type="text" class="form-control col-sm-2" placeholder="请输入成本">
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label">&emsp;活动所有者&emsp;</label>
+                <select id="input_query_ownerUserName" class="form-control select2 select2-danger select2-hidden-accessible col-sm-2" data-dropdown-css-class="select2-danger"  data-select2-id="12" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="" value="">请选择</option>
+                    <option data-select2-id="55">Alaska</option>
+                    <option data-select2-id="55">Alaska</option>
+                </select>
+                <label class="col-form-label">&emsp;&emsp;活动创建者&emsp;</label>
+                <select id="input_query_createByUserName" class="form-control select2 select2-danger select2-hidden-accessible col-sm-2" data-dropdown-css-class="select2-danger"  data-select2-id="12" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="" value="">请选择</option>
+                    <option data-select2-id="55">Alaska</option>
+                    <option data-select2-id="56">California</option>
+                </select>
+                <label class="col-form-label">&emsp;&emsp;活动修改者&emsp;</label>
+                <select id="input_query_editByUserName" class="form-control select2 select2-danger select2-hidden-accessible col-sm-2" data-dropdown-css-class="select2-danger"  data-select2-id="12" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="" value="">请选择</option>
+                    <option data-select2-id="55">Alaska</option>
+                    <option data-select2-id="56">California</option>
+                </select>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label">&emsp;开始时间&emsp;&emsp;</label>
+                <input id="input_query_start_date" datetime type="text" class="form-control col-sm-2" placeholder="请输入开始时间">
+                <label class="col-form-label">&emsp;&emsp;结束时间&emsp;&emsp;</label>
+                <input id="input_query_end_date" datetime type="text" class="form-control col-sm-2" placeholder="请输入结束时间">
+            </div>
+            <!--操纵按钮-->
+            <div class="row" style="margin-bottom: 10px">
+                <div class="col-12">
+                    <button id="btnAdd" type="button" class="btn btn-btn-danger btn-outline-danger">添加</button>
+                    <button id="btnDel" type="button" class="btn btn-btn-danger btn-outline-danger">删除</button>
+                    <button id="btnEdit" type="button" class="btn btn-btn-danger btn-outline-danger">修改</button>
+                    <button id="btnQuery" type="button" class="btn btn-btn-danger btn-outline-danger">查询</button>
+                    <button id="btnClear" type="button" class="btn btn-btn-danger btn-outline-danger">清空查询条件</button>
+                </div>
+            </div>
+        </div>
+
+        <!--TODO element: 表格数据-->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table id="infoTable" class="table table-hover table-bordered text-nowrap">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>活动名称</th>
+                                <th>活动所有者</th>
+                                <th>活动创建者</th>
+                                <th>活动修改者</th>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th>成本</th>
+                            </tr>
+                            </thead>
+                            <tbody><!--表格主体数据--></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--TODO element: 表格页码-->
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite"></div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate" >
+                    <div id="btn_page" class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+                        <button type="button" class="btn btn-outline-dark">1</button>
+                        <button type="button" class="btn btn-outline-dark">2</button>
+                        <button type="button" class="btn btn-outline-dark">3</button>
+                    </div>
+
+
+<!--                    <div id="btn_page" class="btn-group-sm" role="group" aria-label="Basic outlined example">-->
+<!--                        <button type="button" class="btn btn-outline-primary">Left</button>-->
+<!--                        <button type="button" class="btn btn-outline-primary">Middle</button>-->
+<!--                        <button type="button" class="btn btn-outline-primary">Right</button>-->
+<!--                    </div>-->
+                    <!--翻页控制-->
+<!--                    <ul class="pagination" id="btn_page">-->
+<!--                        <li class="paginate_button page-item previous" id="example2_previous">-->
+<!--                            <a aria-controls="example2" tabindex="0" class="page-link" disabled="disabled">上一页</a>-->
+<!--                        </li>-->
+<!--                        <li class="paginate_button page-item">-->
+<!--                            <a aria-controls="example2" tabindex="0" class="page-link" onclick="abc()">2</a>-->
+<!--                        </li>-->
+<!--                        <li class="paginate_button page-item next" id="example2_next">-->
+<!--                            <a aria-controls="example2" tabindex="0" class="page-link">下一页</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+                </div>
+            </div>
+
+        </div>
+        <div class="row">&emsp;&emsp;&emsp;</div>
+    </div>
+</section>
+
+<!--TODO element: 活动编辑模态框-->
+<div class="modal fade" id="modal_marketingActivities" data-use="edit" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">活动添加</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <input id="modal_id" type="hidden" class="form-control">
+                            <label class="col-sm-3 col-form-label">活动名称</label>
+                            <input id="modal_name" type="text" class="form-control col-sm-9" placeholder="请输入活动名称">
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">成本</label>
+                            <input id="modal_cost" type="text" class="form-control col-sm-9" placeholder="请输入活动的成本">
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">活动所有者</label>
+                            <select id="modal_owner" class="form-control select2 select2-danger select2-hidden-accessible col-sm-9" data-dropdown-css-class="select2-danger"  data-select2-id="12" tabindex="-1" aria-hidden="true">
+                                <option selected="selected" data-select2-id="14">Alabama</option>
+                                <option data-select2-id="55">Alaska</option>
+                                <option data-select2-id="56">California</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-sm-3">开始时间</label>
+                            <input id="modal_start_date" datetime type="text" class="form-control col-sm-9" placeholder="请输入开始时间">
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-sm-3">结束时间</label>
+                            <input id="modal_end_date" datetime type="text" class="form-control col-sm-9" placeholder="请输入结束时间">
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">描述</label>
+                            <textarea id="modal_description" class="form-control col-sm-9" rows="5"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="btnSave" type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //初始查询条件
+    var pageConditionQueryMarketingActivities = {
+        pageIndex: 1,
+        marketingActivities: {
+            name: "",
+            cost: "",
+            ownerUser: {
+                name: ""
+            },
+            createByUser: {
+                name: ""
+            },
+            editByUser: {
+                name: ""
+            },
+            startDate: "",
+            endDate: ""
+        }
+    };
+
+    //TODO method 查询指定页数据
+    function getPage(page) {
+        if (page !== undefined) {
+            pageConditionQueryMarketingActivities.pageIndex = page;
+        }
+        $.ajax({
+            url: "http://localhost:8080/marketingActivities/getPage.action",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(pageConditionQueryMarketingActivities),
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_getPage...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.result) {
+                    var marketingActivitiesList = data.data.records;
+                    var nowPage = data.data.current;
+                    var endPage = data.data.pages;
+                    //选择表格里面的tbody对象，然后清空
+                    $("#infoTable tbody").empty();
+                    $("#btn_page").empty();
+                    $(marketingActivitiesList).each(function (i, item) {
+                        var ownerUserName = "( 空 )";
+                        var createByUserName = "( 空 )";
+                        var editByUserName = "( 空 )";
+                        if (item.ownerUser !== null) {
+                            ownerUserName = item.ownerUser.name;
+                        }
+                        if (item.createByUser !== null) {
+                            createByUserName = item.createByUser.name;
+                        }
+                        if (item.editByUser !== null) {
+                            editByUserName = item.editByUser.name;
+                        }
+                        $("#infoTable tbody").append('                            <tr>\n' +
+                            '                                <td><input type="checkbox" value="' + item.id + '" ></td>\n' +
+                            '                                <td><a href="javascript:void(0);" onclick="getDetails(' + item.id + ')">' + item.name + '</a></td>\n' +
+                            '                                <td>' + ownerUserName + '</td>\n' +
+                            '                                <td>' + createByUserName + '</td>\n' +
+                            '                                <td>' + editByUserName + '</td>\n' +
+                            '                                <td>' + item.startDate + '</td>\n' +
+                            '                                <td>' + item.endDate + '</td>\n' +
+                            '                                <td>' + item.cost + '</td>\n' +
+                            '                            </tr>');
+                    });
+                    if (nowPage > 1) {
+                        $("#btn_page").append('<button type="button" class="btn btn-outline-primary" onclick="getPage(' + 1 + ')">首页</button>');
+                        $("#btn_page").append('<button type="button" class="btn btn-outline-primary" onclick="getPage(' + (nowPage - 1) + ')">上一页</button>');
+                    }
+                    for (var i = 1; i < 7; i++) {
+                        $("#btn_page").append('<button type="button" class="btn btn-outline-primary" onclick="getPage(' + (parseInt(nowPage / 7) * 6 + i) + ')">'+ (parseInt(nowPage / 7) * 6 + i) + '</button>');
+                        if ((parseInt(nowPage / 7) * 6 + i) === endPage) {
+                            break;
+                        }
+                    }
+                    if (nowPage < endPage) {
+                        $("#btn_page").append('<button type="button" class="btn btn-outline-primary" onclick="getPage(' + (nowPage + 1) + ')">下一页</button>');
+                        $("#btn_page").append('<button type="button" class="btn btn-outline-primary" onclick="getPage(' + (endPage) + ')">尾页</button>');
+                    }
+                }else {
+                    alert(data.errorMsg);
+                }
+                console.log("请求成功marketingActivities_getPage...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_getPage...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_getPage...............");
+            }
+        });
+        //条件查询下拉框赋值
+        pullDownListAssignment();
+    }
+
+    //TODO method: 获取条件查询的所有条件
+    function condition() {
+        pageConditionQueryMarketingActivities.marketingActivities =  {
+            name: $("#input_query_name").val(),
+            cost: $("#input_query_cost").val(),
+            ownerUser: {
+                name: $("#input_query_ownerUserName").val()
+            },
+            createByUser: {
+                name: $("#input_query_createByUserName").val()
+            },
+            editByUser: {
+                name: $("#input_query_editByUserName").val()
+            },
+            startDate: $("#input_query_start_date").val(),
+            endDate: $("#input_query_end_date").val()
+        }
+    }
+
+    //TODO method: 重置模态框
+    function clearModal() {
+        $("#modal_id").val("");
+        $("#modal_name").val("");
+        $("#modal_cost").val("");
+        $("#modal_owner").empty();
+        $("#modal_start_date").val("");
+        $("#modal_end_date").val("");
+        $("#modal_description").val("");
+    }
+
+    //TODO method: 给模态框赋值
+    function getMarketingActivities() {
+        $.ajax({
+            url: "http://localhost:8080/marketingActivities/get.action",
+            type: "get",
+            dataType: "json",
+            data: {
+                id: $("#infoTable tbody input:checked:first").val()
+            },
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_get...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                var marketingActivities = data.data;
+                if (data.result) {
+                    //给文本框赋值
+                    $("#modal_id").val(marketingActivities.id);
+                    $("#modal_name").val(marketingActivities.name);
+                    $("#modal_cost").val(marketingActivities.cost);
+                    $("#modal_start_date").val(marketingActivities.startDate);
+                    $("#modal_end_date").val(marketingActivities.endDate);
+                    $("#modal_description").text(marketingActivities.description);
+                    //下拉列表赋值
+                    modalAssignment(marketingActivities.ownerUser.id);
+                } else {
+                    alert(data.errorMsg)
+                }
+                console.log("请求成功marketingActivities_get...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_get...............");
+                console.log("请求失败marketingActivities_get..............." + textStatus);
+                console.log("请求失败marketingActivities_get:errorThrown..............." + errorThrown);
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_get...............");
+            }
+        });
+    }
+
+    //TODO method: 给条件查询的下拉列表赋值
+    function pullDownListAssignment() {
+        $.ajax({
+            url: "http://localhost:8080/user/getAll.action",
+            type: "get",
+            dataType: "json",
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_user_getAll...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.result) {
+                    var inputQueryOwnerUserName = $("#input_query_ownerUserName");
+                    var inputQueryCreateByUserName = $("#input_query_createByUserName");
+                    var inputQueryEditByUserName = $("#input_query_editByUserName");
+                    inputQueryOwnerUserName.empty();
+                    inputQueryCreateByUserName.empty();
+                    inputQueryEditByUserName.empty();
+                    inputQueryOwnerUserName.append('<option selected="selected" data-select2-id="" value="">请选择</option>');
+                    inputQueryCreateByUserName.append('<option selected="selected" data-select2-id="" value="">请选择</option>');
+                    inputQueryEditByUserName.append('<option selected="selected" data-select2-id="" value="">请选择</option>');
+                    $(data.data).each(function (i, item) {
+                        inputQueryOwnerUserName.append('<option data-select2-id="55" value="' + item.name + '">' + item.name + '</option>');
+                        inputQueryCreateByUserName.append('<option data-select2-id="55" value="' + item.name + '">' + item.name + '</option>');
+                        inputQueryEditByUserName.append('<option data-select2-id="55" value="' + item.name + '">' + item.name + '</option>');
+                    });
+                }else{
+                    alert(data.msg);
+                }
+                console.log("请求成功marketingActivities_user_getAll...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_user_getAll...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_user_getAll...............");
+            }
+        });
+    }
+
+    //TODO method: 给模态框的下拉列表赋值
+    function modalAssignment(ownerId) {
+        $.ajax({
+            url: "http://localhost:8080/user/getAll.action",
+            type: "get",
+            dataType: "json",
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_user_getAll...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                $(data.data).each(function (i, item) {
+                    if (item.id === ownerId) {
+                        $("#modal_owner").append('<option selected value="' + item.id + '">' + item.name + '</option>\n');
+                    } else {
+                        $("#modal_owner").append('<option value="' + item.id + '">' + item.name + '</option>\n');
+                    }
+                });
+                $("#modal_marketingActivities").modal('show');
+                console.log("请求成功marketingActivities_user_getAll...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_user_getAll...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_user_getAll...............");
+            }
+        });
+    }
+
+    //TODO method: 添加
+    function add() {
+        $.ajax({
+            url: "http://localhost:8080/marketingActivities/add.action",
+            type: "post",
+            dataType: "json",
+            data: {
+                name: $("#modal_name").val(),
+                cost: $("#modal_cost").val(),
+                owner: $("#modal_owner").val(),
+                startDate: $("#modal_start_date").val(),
+                endDate: $("#modal_end_date").val(),
+                description: $("#modal_description").val()
+            },
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_add...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.result) {
+                    $("#modal_marketingActivities").modal('hide');
+                    getPage();
+                    alert(data.successMsg);
+                } else {
+                    alert(data.errorMsg);
+                }
+                console.log("请求成功marketingActivities_add...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_add...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_add...............");
+            }
+        });
+    }
+
+    //TODO method: 修改
+    function update() {
+        $.ajax({
+            url: "http://localhost:8080/marketingActivities/edit.action",
+            type: "post",
+            dataType: "json",
+            data: {
+                id: $("#modal_id").val(),
+                name: $("#modal_name").val(),
+                cost: $("#modal_cost").val(),
+                owner: $("#modal_owner").val(),
+                startDate: $("#modal_start_date").val(),
+                endDate: $("#modal_end_date").val(),
+                description: $("#modal_description").val()
+            },
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_edit...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.result) {
+                    //隐藏模态框
+                    $("#modal_marketingActivities").modal('hide');
+                    getPage();
+                    alert(data.successMsg);
+                } else {
+                    alert(data.errorMsg);
+                }
+                console.log("请求成功marketingActivities_edit...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_edit...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_edit...............");
+            }
+        });
+    }
+
+    //TODO method: 删除
+    function del(ids) {
+        $.ajax({
+            url: "http://localhost:8080/marketingActivities/del.action",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(ids),
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_del...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.result) {
+                    getPage();
+                    alert(data.successMsg);
+                } else {
+                    alert(data.errorMsg);
+                }
+                console.log("请求成功marketingActivities_del...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_del...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_del...............");
+            }
+        });
+    }
+
+    //TODO: method: 详细信息 待完成
+    function getDetails(id) {
+        $.ajax({
+            url: "http://localhost:8080/marketingActivitiesRemark/get.action",
+            type: "get",
+            dataType: "json",
+            data: {
+                id: id
+            },
+            beforeSend: function (XHR) {
+                console.log("准备开始请求marketingActivities_getPage...............")
+            },
+            success: function (data, textStatus, jqXHR) {
+
+                console.log("请求成功marketingActivities_getPage...............");
+            },
+            error: function (XHR, textStatus, errorThrown) {
+                console.log("请求失败marketingActivities_getPage...............");
+            },
+            complete: function (XHR, textStatus) {
+                console.log("请求完毕marketingActivities_getPage...............");
+            }
+        });
+    }
+
+    //TODO method: 查询条件按钮事件
+    function queryKey() {
+        condition();
+        getPage(1);
+    }
+
+    //TODO method: 清空查询条件按钮事件
+    function queryClear() {
+        $("#input_query_name").val("");
+        $("#input_query_cost").val("")
+        $("#input_query_ownerUserName").val("");
+        $("#input_query_createByUserName").val("");
+        $("#input_query_editByUserName").val("");
+        $("#input_query_start_date").val("");
+        $("#input_query_end_date").val("");
+        condition();
+        getPage(1);
+    }
+
+    //TODO method: 添加按钮事件
+    function btnAdd() {
+        //修改模式为add框
+        $("#modal_marketingActivities").data("use", "add");
+        //重置模态框
+        clearModal();
+        //修改标题
+        $("#modal_marketingActivities h4").text("活动添加");
+        //给下拉列表赋值
+        modalAssignment();
+    }
+
+    //TODO method: 修改按钮事件
+    function btnEdit() {
+        //判断是否选中一行
+        if ($("#infoTable tbody input:checked").length <= 0) {
+            window.alert("你没有选中任何一行");
+            return;
+        };
+        //修改模式为edit框
+        $("#modal_marketingActivities").data("use", "edit");
+        //重置模态框
+        clearModal();
+        //修改标题
+        $("#modal_marketingActivities h4").text("活动修改");
+        //给模态框赋值
+        getMarketingActivities();
+    }
+
+    //TODO 保存按钮事件
+    function btnSave() {
+        if ($("#modal_marketingActivities").data("use") === "add") {
+            add();
+            return;
+        }
+        if ($("#modal_marketingActivities").data("use") === "edit") {
+            update();
+            return;
+        }
+    }
+
+    //TODO 删除按钮事件
+    function btnDel() {
+        //判断是否选中一行【利用选择器选中DOM对象】
+        if ($("#infoTable tbody input:checked").length <= 0) {
+            window.alert("你没有选中任何一行");
+            return;
+        }
+        if (!confirm("是否确认删除?")) {
+            return;
+        }
+        //选中第一个checkBox里面的value
+        var ids = new Array();
+        $("#infoTable tbody input:checked").each(function () {
+            ids.push($(this).val());
+        });
+        //删除
+        del(ids);
+    }
+
+    //TODO method: 复选框全部勾选与取消勾选
+    function selectAllCheckbox() {
+        $("tbody :checkbox").prop("checked",
+            $("thead :checkbox").prop("checked"));
+    }
+
+    //TODO Binding event
+    $(function () {
+        //初始化日期组件
+        dateInit();
+        //查询指定页
+        getPage();
+        //条件查询
+        $('#btnQuery').click(queryKey);
+        //清空条件查询
+        $('#btnClear').click(queryClear);
+        //复选框全部勾选与取消勾选
+        $("thead :checkbox").click(selectAllCheckbox);
+        //添加按钮点击
+        $("#btnAdd").click(btnAdd);
+        //修改按钮点击
+        $("#btnEdit").click(btnEdit);
+        //保存按钮点击
+        $("#btnSave").click(btnSave);
+        //删除按钮点击
+        $("#btnDel").click(btnDel);
+    });
+</script>

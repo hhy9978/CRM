@@ -2,6 +2,8 @@ package com.hhy.crm.service;
 
 import com.hhy.crm.beans.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hhy.crm.exception.MySqlException;
+import com.hhy.crm.exception.MyTextException;
 
 import java.util.List;
 
@@ -13,4 +15,13 @@ import java.util.List;
 public interface UserService extends IService<User> {
 
 
+    List<User> getAll() throws MySqlException, MyTextException;
+
+    User get(String id) throws MySqlException, MyTextException;
+
+    void add(User user) throws MySqlException, MyTextException;
+
+    void del(String... ids) throws MySqlException, MyTextException;
+
+    void edit(User user) throws MySqlException, MyTextException;
 }

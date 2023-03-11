@@ -16,28 +16,13 @@
         <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
         <result property="editBy" column="edit_by" jdbcType="VARCHAR"/>
         <result property="editTime" column="edit_time" jdbcType="VARCHAR"/>
+        <association property="ownerUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="owner">
+        </association>
+        <association property="createByUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="create_by">
+        </association>
+        <association property="editByUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="edit_by">
+        </association>
     </resultMap>
-
-    <resultMap id="getAll" type="com.hhy.crm.beans.MarketingActivities">
-        <id property="id" column="id" jdbcType="VARCHAR"/>
-        <result property="owner" column="owner" jdbcType="VARCHAR"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="startDate" column="start_date" jdbcType="VARCHAR"/>
-        <result property="endDate" column="end_date" jdbcType="VARCHAR"/>
-        <result property="cost" column="cost" jdbcType="BIGINT"/>
-        <result property="description" column="description" jdbcType="VARCHAR"/>
-        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
-        <result property="editBy" column="edit_by" jdbcType="VARCHAR"/>
-        <result property="editTime" column="edit_time" jdbcType="VARCHAR"/>
-        <association  property="ownerUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="owner" >
-        </association >
-        <association  property="createByUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="create_by" >
-        </association >
-        <association  property="editByUser" select="com.hhy.crm.mapper.UserMapper.selectById" column="edit_by" >
-        </association >
-    </resultMap>
-
 
     <sql id="Base_Column_List">
         id,owner,name,
@@ -46,19 +31,59 @@
         edit_by,edit_time
     </sql>
 
-    <select id="getAll" resultMap="getAll">
-        select id,
-               `owner`,
-               `name`,
-               start_date,
-               end_date,
-               cost,
-               `description`,
-               create_by,
-               create_time,
-               edit_by,
-               edit_time
+    <sql id="Base_Column_List_t1">
+        t1.id,t1.owner,t1.name,
+        t1.start_date,t1.end_date,t1.cost,
+        t1.description,t1.create_by,t1.create_time,
+        t1.edit_by,t1.edit_time
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from tbl_marketing_activities
     </select>
+
+    <select id="getPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_t1"/>
+        from tbl_marketing_activities as t1
+        left join tbl_user as t2
+        on t1.owner = t2.id
+        left join tbl_user as t3
+        on t1.create_by = t3.id
+        left join tbl_user as t4
+        on t1.edit_by = t4.id
+        <where >
+            <if test="name != null and name != ''">
+                t1.name = '${name}'
+            </if>
+            <if test="cost != null and cost != ''">
+                and t1.cost = ${cost}
+            </if>
+            <if test="ownerUserName != null and ownerUserName != ''">
+                and t2.name = '${ownerUserName}'
+            </if>
+            <if test="createByUserName != null and createByUserName != ''">
+                and t3.name = '${createByUserName}'
+            </if>
+            <if test="editByUserName != null and editByUserName != ''">
+                and t4.name = '${editByUserName}'
+            </if>
+            <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                and t1.create_time <![CDATA[ > ]]> '${startDate}' and t1.create_time <![CDATA[ < ]]> '${endDate}'
+            </if>
+        </where>
+    </select>
+
+    <select id="get" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_marketing_activities
+        where
+        id = #{id,jdbcType=VARCHAR}
+    </select>
+
+
 
 </mapper>
